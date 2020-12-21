@@ -63,17 +63,19 @@ if [ $num = '1' ]; then
     elif [ $num = '8' ]; then
     mod=video-driver
     dir=$tp/video
+    elif [ $num = '9' ]; then
+    mod=utils
     else die "Invalid target input, aborting!"
 fi
 
-if [ $num -eq '1' ] || [ $num -eq '2' ] || [ $num -eq '3' ]; then
+if [ $num -eq '1' ] || [ $num -eq '2' ] || [ $num -eq '3' ] || [ $num -eq '9' ]; then
     dir=$ds/$mod
 fi
 }
 
 # Add remote
 function addremote() {
-    if [ $num -eq '1' ] || [ $num -eq '2' ] || [ $num -eq '3' ]; then
+    if [ $num -eq '1' ] || [ $num -eq '2' ] || [ $num -eq '3' ] || [ $num -eq '9' ]; then
     $rma/$mod $rm/$wl/$mod
     elif [ $num -eq '5' ]; then
     $rma/$mod $rm/$qc-$os/$mod
@@ -85,10 +87,10 @@ function addremote() {
 # Initialize
 function init() {
 header "Available modules"
-info "1.qcacld-3.0\n2.qca-wifi-host-cmn\n3.fw-api\n4.audio-kernel\n5.data-kernel\n6.camera-kernel\n7.display-drivers\n8.video-driver"
+info "1.qcacld-3.0\n2.qca-wifi-host-cmn\n3.fw-api\n4.audio-kernel\n5.data-kernel\n6.camera-kernel\n7.display-drivers\n8.video-driver\n9.utils/sigma-dut"
 read -p "Target kernel module: " num
 case $num in 
-    1 | 2 | 3 | 4 | 5 | 6 | 7 |8)
+    1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |9)
     read -p "Target tag / branch: " br
     read -p "Import (i) / Update (u): " option
     if [ $option != u ]; then
@@ -103,7 +105,7 @@ function import() {
     addremote
     success "Add remote for target module ${mod} done."
     case $mod in
-        qcacld-3.0 | qca-wifi-host-cmn | fw-api | audio-kernel | data-kernel | camera-kernel | display-drivers | video-driver)
+        qcacld-3.0 | qca-wifi-host-cmn | fw-api | audio-kernel | data-kernel | camera-kernel | display-drivers | video-driver | utils/sigma-dut)
         readcmd
         success "Import from target ${br} for target ${mod} done."
     esac
@@ -112,7 +114,7 @@ function import() {
 # Update modules
 function update() {
     case $mod in
-        qcacld-3.0 | qca-wifi-host-cmn | fw-api | audio-kernel | data-kernel | camera-kernel | display-drivers | video-driver)
+        qcacld-3.0 | qca-wifi-host-cmn | fw-api | audio-kernel | data-kernel | camera-kernel | display-drivers | video-driver | utils/sigma-dut)
         readcmd
         success "Update to target ${br} for target module ${mod} done."
     esac
